@@ -24,35 +24,36 @@ import java.util.jar.Attributes;
  */
 public class CustomColorPicker extends View {
 
+    public interface OnColorChangedListener {
+        void colorChanged(int color);
+    }
+
     // constant properties
     private final float originalWidth = 256;
-    private final float originalHeight = 10;
+    private final float originalHeight = 20;
     private final String mNamespace = "http://schemas.android.com/apk/res/android";
 
     // properties
+    private OnColorChangedListener mListener;
     private Paint mPaint;
     private float mCurrentHue;
     private int mSelectedHue = -1;
     private int[] mHueBarColors = new int[258];
     private int currentColor;
     private float widthScale;
-    private Canvas mCanvas;
     private int widthType;
     private int heightType;
     private float usedHeight;
     private float currentX = 0;
 
-
-    public int getCurrentColor(){
-     return currentColor;
-    }
-
     public CustomColorPicker(Context context){
         super(context);
+        mListener = (OnColorChangedListener)context;
     }
 
-    public CustomColorPicker(Context context, AttributeSet attrs) {
+    public CustomColorPicker(Context context, AttributeSet attrs){
         super(context, attrs);
+        mListener = (OnColorChangedListener)context;
 
         // get width and height type from attributes
         widthType = attrs.getAttributeIntValue(mNamespace, "layout_width", LinearLayout.LayoutParams.MATCH_PARENT);
@@ -106,11 +107,10 @@ public class CustomColorPicker extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mCanvas = canvas;
 
         // count the height and width scales for drawing color bar hue
         // if layout_width is set to wrap_content from xml attribute, then return 1
-        widthScale = widthType == LinearLayout.LayoutParams.WRAP_CONTENT ? 1 : ((float) getWidth()) / originalWidth;
+        widthScale = widthType == LinearLayout.LayoutParams.WRAP_CONTENT ? 1 : ((float)(getWidth() - 50)) / originalWidth;
         // if layout_height is set to wrap_content from xml attribute, then use origin
         usedHeight = heightType == LinearLayout.LayoutParams.WRAP_CONTENT ? originalHeight : getHeight();
 
@@ -124,18 +124,20 @@ public class CustomColorPicker extends View {
                 mPaint.setStrokeWidth((int)widthScale + 10);
             }
 
-            canvas.drawLine(x*widthScale, 0, x*widthScale, usedHeight, mPaint);
+            float xAxis = x*widthScale + 25;
+            canvas.drawLine(xAxis, (usedHeight)/2, xAxis, (usedHeight)/2 + 1, mPaint);
         }
 
         if (mSelectedHue > -1 && mSelectedHue < 256){
             mPaint.setColor(mHueBarColors[mSelectedHue]);
         }
 
-        mPaint.setColor(Color.BLACK);
-        canvas.drawCircle(currentX, usedHeight/2, 20, mPaint);
+        if (currentX == 0) {
+            currentX = 25;
+        }
 
-        mPaint.setColor(mHueBarColors[mSelectedHue == -1? 0 : mSelectedHue]);
-        canvas.drawCircle(currentX, usedHeight/2, 18, mPaint);
+        mPaint.setColor(mHueBarColors[mSelectedHue == -1 ? 0 : mSelectedHue]);
+        canvas.drawCircle(currentX, usedHeight / 2, 10, mPaint);
     }
 
     @Override
@@ -160,11 +162,13 @@ public class CustomColorPicker extends View {
 
     private void onColorChange(float x, float y){
         // get selected color
-        if (x > 0 && x < 256*widthScale && y > 0 && y < usedHeight) {
-            mCurrentHue = (255 - x/widthScale) * 360 / 255;
+        if (x > 0 + 25 && x < 256*widthScale + 25 && y > 0 && y < usedHeight) {
+            mCurrentHue = (255 - (x-25)/widthScale) * 360 / 255;
             mSelectedHue = 255 - (int) (mCurrentHue * 255 / 360);
             currentColor =  mHueBarColors[mSelectedHue];
             currentX = x;
+            mListener.colorChanged(currentColor);
         }
     }
 }
+

@@ -13,11 +13,18 @@
         android:text="Hello World!" />
 
     <com.example.colorpicker.CustomColorPicker
+        android:layout_margin="30dp"
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="20dp" />
 
     <TextView
+        android:id="@+id/endTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="End of Hello World!"/>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar" />
 </LinearLayout>

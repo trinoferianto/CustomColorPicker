@@ -4,18 +4,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CustomColorPicker.OnColorChangedListener {
+
+    TextView endTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LinearLayout ll = (LinearLayout) findViewById(R.id.ll);
+        endTV = (TextView) findViewById(R.id.endTextView);
+    }
 
-//        CustomColorPicker cp = new CustomColorPicker(this);
-//        cp.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        ll.addView(cp);
+    @Override
+    public void colorChanged(int color) {
+        endTV.setTextColor(color);
     }
 }
