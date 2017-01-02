@@ -7,24 +7,61 @@
     android:layout_height="match_parent"
     tools:context="com.example.colorpicker.MainActivity">
 
-    <TextView
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
-    <com.example.colorpicker.CustomColorPicker
-        android:layout_margin="30dp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="20dp" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/endTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="End of Hello World!"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="256dp"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
 
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar" />
+            <com.example.colorpicker.CustomColorPicker
+                android:layout_margin="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/endTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End of Hello World!"/>
+
+            <Button
+                android:id="@+id/addBtn"
+                android:text="Save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:id="@+id/dragArea"
+                android:background="@android:color/holo_red_light"
+                android:layout_width="300dp"
+                android:layout_height="300dp">
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_launcher" />
+                <EditText
+                    android:id="@+id/dragET"
+                    android:text="Test"
+                    android:textSize="36dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/resultImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
